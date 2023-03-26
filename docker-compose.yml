@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  nestjs_app:
+    container_name: nestjs_app
+    build: .
+    image: jay75chauhan/nestjs_crud_docker:1.0.0
+    ports:
+      - '3000:3000'
+    environment:
+      - DB_TYPE=postgres
+      - PG_DB=postgres
+      - PG_USER=postgres
+      - PG_PASSWORD=postgres
+      - PG_HOST=nestjs_db
+      - PG_PORT=5432
+    depends_on:
+      - nestjs_db
+
+  nestjs_db:
+    container_name: nestjs_db
+    image: postgres:12
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - nestjs_db_data:/var/lib/postgresql/data
+
+volumes:
+  nestjs_db_data: {}
